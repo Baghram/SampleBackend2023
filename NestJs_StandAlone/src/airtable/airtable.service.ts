@@ -31,15 +31,15 @@ export class AirtableService {
                 id: 'attGiOwHpGXZ0wbR0',
                 width: 350,
                 height: 350,
-                url: 'https://v5.airtableusercontent.com/v1/14/14/1674936000000/gCuN_bls_mOVYs5UU46p4A/aHhn1ddB9fWesjFijoY9eQTqwc7xWUGMggqg0fWlzT626GJsqI8tCqA_VTIHJUgJdl8sCYhwOJfm29Rlz0XS3KMSsdxuZDvqiHcGKD-Sc48maOAPW37GB9nadmmCTZDW/BcVvQRr7TPjq3WQa3TSPJgF1U1WvFbyIDluc2yLoX8k',
-                filename: 'e0a4a500-0e67-4b87-b1f2-aeeec026c452.jpg',
+                url: 'image url here',
+                filename: 'filename.jpg',
                 size: 24214,
                 type: 'image/jpeg',
                 thumbnails: [Object]
                 }
             ],
             Description: 'Description 123',
-            ACK: 'Error, Invalid Poster Type',
+            ACK: '',
             'Updated At': '2023-01-24',
             Title: 'Test Title'
             }
