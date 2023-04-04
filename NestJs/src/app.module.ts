@@ -1,10 +1,23 @@
-import { Module } from '@nestjs/common';
+import { Module, MiddlewareConsumer, RequestMethod } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { JwtModule } from '@nestjs/jwt';
+import { TestMiddleware } from './user/middleware/test.middleware';
 
 @Module({
-  imports: [],
+  imports: [
+    JwtModule.register({
+      secret: process.env.SECRET,
+    }),
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(TestMiddleware).forRoutes({
+      path: '/',
+      method: RequestMethod.GET,
+    });
+  }
+}
