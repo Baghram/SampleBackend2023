@@ -1,52 +1,37 @@
 import { Injectable } from '@nestjs/common';
-import { AirtableHelper } from './helper/airtable.helper';
-import Airtable, { FieldSet } from 'airtable';
+import Airtable, { FieldSet, apiKey } from 'airtable';
 console.log('serviceS');
 
 @Injectable()
 export class AirtableService {
-  airtable: AirtableHelper;
-  page: any;
-  options: Airtable.SelectOptions<FieldSet>;
-  record: Airtable.Record<FieldSet>;
-
-  constructor() {
-    this.airtable = new AirtableHelper();
-  }
+  constructor() {}
 
   async onModuleInit() {
-    this.airtable.loadCurrentPage();
+    await this.getData();
   }
 
   async getData() {
-    while (await this.airtable.loadNextPage()) {
-      let page = await this.airtable.nextPage();
-      for (const row of page) {
-        let fields = row['fields'];
-        /* Log result
+    Airtable.configure({ apiKey: process.env.AIRTABLE_APIKEY });
+    const base = Airtable.base(process.env.AIRTABLE_BASE);
+    const table = base.table(process.env.AIRTABLE_BASE);
+    const option: any = {
+      cellFormat: 'json',
+      pageSize: 10,
+      fields: ['ID', 'Name', 'Address'],
+      sort: [
         {
-            ID: 1,
-            Poster: [
-                {
-                id: 'attGiOwHpGXZ0wbR0',
-                width: 350,
-                height: 350,
-                url: 'image url here',
-                filename: 'filename.jpg',
-                size: 24214,
-                type: 'image/jpeg',
-                thumbnails: [Object]
-                }
-            ],
-            Description: 'Description 123',
-            ACK: '',
-            'Updated At': '2023-01-24',
-            Title: 'Test Title'
-            }
-        */
-
-        //Insert Logic Here (upload to gcp, mongodb,redis,etc)
+          field: 'ID',
+          direction: 'asc',
+        },
+      ],
+    };
+    let tableData = [];
+    await table.select(option).eachPage((records, fetchNextPage) => {
+      for (const record of records) {
+        tableData.push(record['fields']);
       }
-    }
+      fetchNextPage();
+    });
+    //Do your logic here (uploading to server,etc)
   }
 }
